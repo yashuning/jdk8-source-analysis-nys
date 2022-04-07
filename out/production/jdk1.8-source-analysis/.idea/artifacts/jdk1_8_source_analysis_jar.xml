@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="jdk1.8-source-analysis:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/jdk1_8_source_analysis_jar</output-path>
+    <root id="archive" name="jdk1.8-source-analysis.jar">
+      <element id="module-output" name="jdk1.8-source-analysis" />
+    </root>
+  </artifact>
+</component>

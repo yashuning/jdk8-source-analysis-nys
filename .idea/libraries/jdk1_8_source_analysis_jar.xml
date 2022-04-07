@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="jdk1_8_source_analysis_jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/jdk1_8_source_analysis_jar/rt-debug.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/artifacts/jdk1_8_source_analysis_jar/jdk1.8-source-analysis.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
