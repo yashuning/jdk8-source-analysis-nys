@@ -380,19 +380,19 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      */
     private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
     private static final int COUNT_BITS = Integer.SIZE - 3;
-    private static final int CAPACITY   = (1 << COUNT_BITS) - 1;
+    private static final int CAPACITY   = (1 << COUNT_BITS) - 1;    // 线程池支持的最大的线程数量（536870911，完全够用了）
 
     // runState is stored in the high-order bits
-    private static final int RUNNING    = -1 << COUNT_BITS;
-    private static final int SHUTDOWN   =  0 << COUNT_BITS;
-    private static final int STOP       =  1 << COUNT_BITS;
-    private static final int TIDYING    =  2 << COUNT_BITS;
-    private static final int TERMINATED =  3 << COUNT_BITS;
+    private static final int RUNNING    = -1 << COUNT_BITS;     // 运行中, 为初始状态，即刚创建的线程池就是此状态（能接受新提交的任务，也能处理阻塞队列中的任务）
+    private static final int SHUTDOWN   =  0 << COUNT_BITS;     // 关闭状态，不再接受新提交的任务，但是能继续处理阻塞队列中已保存的任务
+    private static final int STOP       =  1 << COUNT_BITS;     // 停止状态，不能接受新任务，也不处理队列中的任务，会中断正在处理任务的线程
+    private static final int TIDYING    =  2 << COUNT_BITS;     // 清理中，所有任务已中止，workerCount（有效线程数）为0
+    private static final int TERMINATED =  3 << COUNT_BITS;     // 终止状态，钩子函数terminated()方法执行完成后进入该状态，线程池彻底销毁
 
     // Packing and unpacking ctl
-    private static int runStateOf(int c)     { return c & ~CAPACITY; }
-    private static int workerCountOf(int c)  { return c & CAPACITY; }
-    private static int ctlOf(int rs, int wc) { return rs | wc; }
+    private static int runStateOf(int c)     { return c & ~CAPACITY; }      // 计算当前运行状态
+    private static int workerCountOf(int c)  { return c & CAPACITY; }       // 计算当前线程数量
+    private static int ctlOf(int rs, int wc) { return rs | wc; }            // 通过状态和线程数生成ctl
 
     /*
      * Bit field accessors that don't require unpacking ctl.
@@ -603,9 +603,9 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         private static final long serialVersionUID = 6138294804551838833L;
 
         /** Thread this worker is running in.  Null if factory fails. */
-        final Thread thread;
+        final Thread thread;    // Worker持有的线程
         /** Initial task to run.  Possibly null. */
-        Runnable firstTask;
+        Runnable firstTask;     // 初始化的任务，可以为null
         /** Per-thread task counter */
         volatile long completedTasks;
 
