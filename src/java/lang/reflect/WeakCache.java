@@ -97,7 +97,7 @@ final class WeakCache<K, P, V> {
      *                              {@code subKeyFactory} or {@code value}
      *                              calculated by {@code valueFactory} is null.
      */
-    public V get(K key, P parameter) {
+    public V get(K key, P parameter) {      // key：类加载器；parameter：接口数组
         Objects.requireNonNull(parameter);
 
         expungeStaleEntries();

@@ -368,7 +368,7 @@ public class Proxy implements java.io.Serializable {
             checkProxyAccess(Reflection.getCallerClass(), loader, intfs);
         }
 
-        return getProxyClass0(loader, intfs);
+        return getProxyClass0(loader, intfs);   // 获取代理对象
     }
 
     /*
@@ -408,7 +408,7 @@ public class Proxy implements java.io.Serializable {
      * to perform permission checks before calling this.
      */
     private static Class<?> getProxyClass0(ClassLoader loader,
-                                           Class<?>... interfaces) {
+                                           Class<?>... interfaces) {    // 获得代理类 Class对象
         if (interfaces.length > 65535) {
             throw new IllegalArgumentException("interface limit exceeded");
         }
@@ -416,6 +416,7 @@ public class Proxy implements java.io.Serializable {
         // If the proxy class defined by the given loader implementing
         // the given interfaces exists, this will simply return the cached copy;
         // otherwise, it will create the proxy class via the ProxyClassFactory
+        // 如果代理类存在直接返回一个缓存的 copy, 如果不存在通过 ProxyClassFactory 创建对应的代理类
         return proxyClassCache.get(loader, interfaces);
     }
 
@@ -700,7 +701,7 @@ public class Proxy implements java.io.Serializable {
      *          {@code null}
      */
     @CallerSensitive
-    public static Object newProxyInstance(ClassLoader loader,
+    public static Object newProxyInstance(ClassLoader loader,       // 实例化代理类对象
                                           Class<?>[] interfaces,
                                           InvocationHandler h)
         throws IllegalArgumentException
@@ -715,6 +716,7 @@ public class Proxy implements java.io.Serializable {
 
         /*
          * Look up or generate the designated proxy class.
+         * 查找或者通过 ClassLoader 和接口列表生成一个继承 Proxy 类并实现了接口列表的代理类的 Class
          */
         Class<?> cl = getProxyClass0(loader, intfs);
 
@@ -726,6 +728,7 @@ public class Proxy implements java.io.Serializable {
                 checkNewProxyPermission(Reflection.getCallerClass(), cl);
             }
 
+            // 获得代理类构造器 (接收一个 InvocationHandler 参数)
             final Constructor<?> cons = cl.getConstructor(constructorParams);
             final InvocationHandler ih = h;
             if (!Modifier.isPublic(cl.getModifiers())) {
@@ -736,6 +739,7 @@ public class Proxy implements java.io.Serializable {
                     }
                 });
             }
+            // 通过构造方法创建一个新的实例
             return cons.newInstance(new Object[]{h});
         } catch (IllegalAccessException|InstantiationException e) {
             throw new InternalError(e.toString(), e);
